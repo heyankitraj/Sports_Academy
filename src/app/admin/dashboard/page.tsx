@@ -18,6 +18,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [viewRole, setViewRole] = useState<"STUDENT" | "COACH">("STUDENT");
   const [selectedUser, setSelectedUser] = useState<any>(null);
+  const [updatingStatus, setUpdatingStatus] = useState<"APPROVED" | "REJECTED" | null>(null);
 
   useEffect(() => {
     if (!auth.isLoading) {
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
     id: string,
     status: "APPROVED" | "REJECTED",
   ) => {
+    setUpdatingStatus(status);
     try {
       await api.patch(`/admin/users/${id}/status`, { status });
       toast.success(`User marked as ${status}`);
@@ -60,6 +62,8 @@ export default function AdminDashboard() {
       }
     } catch (err: any) {
       toast.error(err.response?.data?.error || "Failed to update status");
+    } finally {
+      setUpdatingStatus(null);
     }
   };
 
@@ -322,17 +326,27 @@ export default function AdminDashboard() {
                         onClick={() =>
                           handleUpdateStatus(selectedUser._id, "REJECTED")
                         }
-                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
+                        disabled={updatingStatus !== null}
+                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-white border border-red-200 text-red-600 hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[80px]"
                       >
-                        Reject
+                        {updatingStatus === "REJECTED" ? (
+                          <span className="w-5 h-5 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></span>
+                        ) : (
+                          "Reject"
+                        )}
                       </button>
                       <button
                         onClick={() =>
                           handleUpdateStatus(selectedUser._id, "APPROVED")
                         }
-                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm"
+                        disabled={updatingStatus !== null}
+                        className="px-4 py-2 rounded-lg text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-[90px]"
                       >
-                        Approve
+                        {updatingStatus === "APPROVED" ? (
+                          <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        ) : (
+                          "Approve"
+                        )}
                       </button>
                     </div>
                   )}
