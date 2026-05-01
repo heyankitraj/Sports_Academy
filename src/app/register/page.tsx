@@ -458,7 +458,7 @@ export default function RegisterPage() {
     <div className="space-y-4">
       <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-4">
         <p className="text-sm text-blue-700">
-          Please upload clear, legible documents. Max image size: 1MB, PDF: 2MB.
+          Please upload clear, legible documents. Max file size: 10MB per document (Images/PDFs).
         </p>
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

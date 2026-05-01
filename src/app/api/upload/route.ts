@@ -2,12 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import sharp from "sharp";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 
-// Next.js App Router disables body parsing for file uploads by default,
-// so we must parse multipart/form-data manually via the Web API FormData.
-export const config = {
-  api: { bodyParser: false },
-};
-
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -20,13 +14,13 @@ export async function POST(req: NextRequest) {
     const { type: mimetype, size } = file;
     let fileBuffer: Buffer = Buffer.from(new Uint8Array(await file.arrayBuffer()));
 
-    const maxPdfSize = 2 * 1024 * 1024; // 2 MB
-    const maxImageSize = 1 * 1024 * 1024; // 1 MB after compression
+    const maxPdfSize = 10 * 1024 * 1024; // 10 MB
+    const maxImageSize = 5 * 1024 * 1024; // 5 MB after compression
 
     if (mimetype === "application/pdf") {
       if (size > maxPdfSize) {
         return NextResponse.json(
-          { error: "PDF size must not exceed 2MB." },
+          { error: "PDF size must not exceed 10MB." },
           { status: 400 },
         );
       }
