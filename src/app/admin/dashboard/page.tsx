@@ -85,17 +85,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await api.post("/auth/logout");
-    } catch (err) {
-      console.log("Backend logout unsupported or failed", err);
-    } finally {
-      localStorage.removeItem("user");
-      dispatch(logout());
-      router.push("/login");
-    }
-  };
+
 
   if (
     auth.isLoading ||
@@ -111,40 +101,6 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-[#f0f2f7] font-sans text-gray-800 pb-12">
-
-      {/* ── Top Navigation ── */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between sticky top-0 z-30 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-600 text-white flex items-center justify-center font-extrabold rounded-lg text-sm shadow">
-            SA
-          </div>
-          <span className="font-extrabold text-xl tracking-tight hidden sm:block text-gray-900">
-            Academy Admin
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() =>
-              handleExport(
-                viewRole === "STUDENT" ? "all-students" : "all-coaches",
-              )
-            }
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-blue-600 bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Export
-          </button>
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 rounded-full text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
-          >
-            Sign Out
-          </button>
-        </div>
-      </nav>
-
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 space-y-8">
 
         {/* ── Header & Tabs ── */}
@@ -158,27 +114,42 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <div className="flex p-1 bg-white rounded-xl self-start sm:self-auto border border-gray-200 shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-4">
             <button
-              onClick={() => setViewRole("STUDENT")}
-              className={`px-6 py-2 text-sm font-semibold rounded-lg transition-all ${
-                viewRole === "STUDENT"
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-gray-500 hover:text-blue-600"
-              }`}
+              onClick={() =>
+                handleExport(
+                  viewRole === "STUDENT" ? "all-students" : "all-coaches",
+                )
+              }
+              className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-blue-600 bg-white border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-colors shadow-sm h-10"
             >
-              Athletes
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Export Data
             </button>
-            <button
-              onClick={() => setViewRole("COACH")}
-              className={`px-6 py-2 text-sm font-semibold rounded-lg transition-all ${
-                viewRole === "COACH"
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "text-gray-500 hover:text-blue-600"
-              }`}
-            >
-              Coaches
-            </button>
+            <div className="flex p-1 bg-white rounded-xl border border-gray-200 shadow-sm h-10">
+              <button
+                onClick={() => setViewRole("STUDENT")}
+                className={`px-6 py-1 text-sm font-semibold rounded-lg transition-all ${
+                  viewRole === "STUDENT"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-gray-500 hover:text-blue-600"
+                }`}
+              >
+                Athletes
+              </button>
+              <button
+                onClick={() => setViewRole("COACH")}
+                className={`px-6 py-1 text-sm font-semibold rounded-lg transition-all ${
+                  viewRole === "COACH"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "text-gray-500 hover:text-blue-600"
+                }`}
+              >
+                Coaches
+              </button>
+            </div>
           </div>
         </div>
 
