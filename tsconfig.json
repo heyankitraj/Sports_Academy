@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-  ],
+, "server/src/services/email.service.js", "server/src/routes/auth.routes.js", "server/src/models/User.js", "server/src/controllers/auth.controller.js", "server/src/index.js"  ],
   "exclude": ["node_modules"]
 }
